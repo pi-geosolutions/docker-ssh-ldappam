@@ -6,6 +6,12 @@ It is supposed to be configured to connect to an LDAP server (tested on
 OpenLDAP server) for authentication. If the account does not exist, it is
 created on first login. By default, on /home/$uid (the uid in the LDAP entry)
 
+## Important information
+This image uses the employeeNumber LDAP attribute as uid. This means that to
+avoid side-effects, you should ensure employeeNumber can't take low values.
+For example, set them to be above 1000. Since it is automatically incremented
+you won't risk having one of your users seen as a system service because of a
+low uid
 
 ## Content
 Images suffixed by -withGDAL provides additional tools:
