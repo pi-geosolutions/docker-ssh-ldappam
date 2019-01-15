@@ -15,6 +15,10 @@ DAEMON=sshd
 if [ ! "$(ls -A /etc/ssh)" ]; then
    cp -a /etc/ssh.cache/* /etc/ssh/
 fi
+# Customize sshd_config (set some keepalive. Should ensure 1h connexions)
+echo "TCPKeepAlive yes" >> /etc/ssh/sshd_config
+echo "ClientAliveInterval 20" >> /etc/ssh/sshd_config
+echo "ClientAliveCountMax 180" >> /etc/ssh/sshd_config
 
 # Generate Host keys, if required
 if ! ls /etc/ssh/ssh_host_* 1> /dev/null 2>&1; then
