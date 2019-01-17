@@ -24,7 +24,7 @@ All images provide several system utilities:
  * `NAME` the "hostname" displayed in the console prompt
  * `LDAP_BASE` defaults to "dc=georchestra,dc=org"
  * `LDAP_URI` defaults to "ldap://ldap.georchestra"
- * `NSLCD_FILTER` the LDAP filter to apply on user selection. Defaults to `(&(objectClass=person)(memberOf=cn=SSH_USERS,ou=roles,$LDAP_BASE))`
+ * `NSLCD_FILTER` the LDAP filter to apply on user selection. Defaults to `(&(objectClass=person)(memberOf=cn=SSH_USER,ou=roles,$LDAP_BASE))`
  * `NSLCD_GIDNUMBER` the gid number to apply to the users. Defaults to "999"
  * `NSLCD_HOMEDIR` the home dir definition. Defaults to /home/$uid. Creates the directory if it doesn't exist. $uid corresponds to the uid attribute in the LDAP directory
  * `NSLCD_LOGINSHELL` defaults to /bin/bash

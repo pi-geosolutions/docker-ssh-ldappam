@@ -31,19 +31,21 @@ RUN apt-get update && \
                 unzip \
                 vim \
                 wget \
-                zip
+                zip \
+      && apt-get clean \
 
 # install postgresql client, gdal
 # & python virtualenv that will be used by any user needing it to install its
 # specific python libs
 # python-gdal is necessary to get gdal python tools such as gdal_edit.py
-RUN apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y \
               gdal-bin \
               postgresql-client \
               python3-gdal \
               python3-pip \
               python3-venv \
-    && rm -rf /var/lib/apt/lists/* && apt-get clean \
+    && apt-get clean \
     && pip3 install --upgrade pip
 
 COPY etc/* /etc/

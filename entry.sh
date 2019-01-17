@@ -43,7 +43,7 @@ cp /etc/nslcd.conf /etc/nslcd.conf.bak
 sed -i "s|uri ldap://geoporegion.pigeosolutions.fr|uri $LDAP_URI|" /etc/nslcd.conf
 sed -i "s|dc=georchestra,dc=org|$LDAP_BASE|g" /etc/nslcd.conf
 if [ -n "$NSLCD_FILTER" ]; then
-    sed -i "s|(&(objectClass=person)(memberOf=cn=SSH_USERS,ou=roles,$LDAP_BASE))|$NSLCD_FILTER|" /etc/nslcd.conf
+    sed -i "s|(&(objectClass=person)(memberOf=cn=SSH_USER,ou=roles,$LDAP_BASE))|$NSLCD_FILTER|" /etc/nslcd.conf
 fi
 if [ -n "$NSLCD_GIDNUMBER" ]; then
     sed -i "s|gidNumber \"999\"|gidNumber \"$NSLCD_GIDNUMBER\"|" /etc/nslcd.conf
