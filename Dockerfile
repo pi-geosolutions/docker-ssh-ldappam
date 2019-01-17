@@ -38,15 +38,15 @@ RUN apt-get update && \
 # & python virtualenv that will be used by any user needing it to install its
 # specific python libs
 # python-gdal is necessary to get gdal python tools such as gdal_edit.py
-RUN apt-get update && \
-    apt-get install -y \
-              gdal-bin \
-              postgresql-client \
-              python3-gdal \
-              python3-pip \
-              python3-venv \
-    && apt-get clean \
-    && pip3 install --upgrade pip
+#RUN apt-get update && \
+#    apt-get install -y \
+#              gdal-bin \
+#              postgresql-client \
+#              python3-gdal \
+#              python3-pip \
+#              python3-venv \
+#    && apt-get clean \
+#    && pip3 install --upgrade pip
 
 COPY etc/* /etc/
 COPY etc/pam.d/* /etc/pam.d/
