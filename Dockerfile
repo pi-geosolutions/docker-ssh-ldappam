@@ -15,7 +15,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 # variable to be visible from user session
 # RUN echo "export NAME=${NAME}" >> /etc/profile
 
-# install ssh server + system utilities
+# install ssh server + system utilities + man pages
 RUN apt-get update && \
     apt-get install -y \
                 bzip2 \
@@ -24,8 +24,10 @@ RUN apt-get update && \
                 libnss-ldapd \
                 nano \
                 openssh-server \
+                man-db \
                 p7zip-full \
                 rsync \
+                screen \
                 supervisor \
                 tar \
                 unzip \
