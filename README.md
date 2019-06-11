@@ -14,7 +14,7 @@ you won't risk having one of your users seen as a system service because of a
 low uid
 
 ## Content
-Images suffixed by -withGDAL provides additional tools:
+Images created using the withgdal branch provide additional tools:
  * python 3 virtual env & pip support so you can manage a python3 environment
  * gdal-bin
  * postgresql client
