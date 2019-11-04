@@ -6,7 +6,7 @@ MAINTAINER Jean Pommier "jean.pommier@pi-geosolutions.fr"
 # Uses supervisor in order to run side-by-side cron and sshd
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    NAME=geoporegion \
+    NAME=georesovregion \
     LDAP_BASE="dc=georchestra,dc=org" \
     LDAP_URI="ldap://ldap.georchestra" \
     LDAP_BINDDN="cn=admin,dc=georchestra,dc=org" \
@@ -43,15 +43,15 @@ RUN apt-get update && \
 # & python virtualenv that will be used by any user needing it to install its
 # specific python libs
 # python-gdal is necessary to get gdal python tools such as gdal_edit.py
-#RUN apt-get update && \
-#    apt-get install -y \
-#              gdal-bin \
-#              postgresql-client \
-#              python3-gdal \
-#              python3-pip \
-#              python3-venv \
-#    && apt-get clean \
-#    && pip3 install --upgrade pip
+RUN apt-get update && \
+    apt-get install -y \
+              gdal-bin \
+              postgresql-client \
+              python3-gdal \
+              python3-pip \
+              python3-venv \
+    && apt-get clean \
+    && pip3 install --upgrade pip
 
 COPY etc/* /etc/
 COPY etc/pam.d/* /etc/pam.d/
