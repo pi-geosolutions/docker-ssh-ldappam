@@ -25,6 +25,8 @@ All images provide several system utilities:
  * compression (p7zip,tar, zip, bzip2),
  * ldap utils
  * wget
+ * CRON
+ * git
 
 ## Environment vars
  * `NAME` the "hostname" displayed in the console prompt

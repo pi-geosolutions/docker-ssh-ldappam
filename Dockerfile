@@ -8,20 +8,18 @@ MAINTAINER Jean Pommier "jean.pommier@pi-geosolutions.fr"
 ENV DEBIAN_FRONTEND=noninteractive \
     NAME=geoporegion \
     LDAP_BASE="dc=georchestra,dc=org" \
-    LDAP_URI="ldap://ldap.georchestra" \
-    LDAP_BINDDN="cn=admin,dc=georchestra,dc=org" \
-    LDAP_BINDPW="secret"
-
-# variable to be visible from user session
-# RUN echo "export NAME=${NAME}" >> /etc/profile
+    LDAP_URI="ldap://ldap.georchestra"
 
 # install ssh server + system utilities + man pages
 RUN apt-get update && \
     apt-get install -y \
                 bzip2 \
+                cron \
+                curl \
                 dos2unix \
                 ldap-utils \
                 libnss-ldapd \
+                git \
                 nano \
                 openssh-server \
                 man-db \
@@ -34,24 +32,9 @@ RUN apt-get update && \
                 vim \
                 wget \
                 zip \
-      && apt-get clean \
+      && apt-get clean
 
-# install postgresql client, gdal
-# & python virtualenv that will be used by any user needing it to install its
-# specific python libs
-# python-gdal is necessary to get gdal python tools such as gdal_edit.py
-#RUN apt-get update && \
-#    apt-get install -y \
-#              gdal-bin \
-#              postgresql-client \
-#              python3-gdal \
-#              python3-pip \
-#              python3-venv \
-#    && apt-get clean \
-#    && pip3 install --upgrade pip
-
-COPY etc/* /etc/
-COPY etc/pam.d/* /etc/pam.d/
+COPY etc/. /etc/
 
 EXPOSE 22
 
