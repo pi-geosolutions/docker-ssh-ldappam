@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:buster
 
 MAINTAINER Jean Pommier "jean.pommier@pi-geosolutions.fr"
 
@@ -34,14 +34,12 @@ RUN apt-get update && \
                 zip \
       && apt-get clean
 
-COPY etc/. /etc/
+COPY root /
 
 EXPOSE 22
 
-ADD supervisord.conf /etc/supervisor/
 RUN mkdir -p /var/log/supervisor
 
-ADD entry.sh /entry.sh
 RUN chmod u+x /entry.sh
 
 ENTRYPOINT ["/entry.sh"]

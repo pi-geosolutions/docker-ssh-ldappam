@@ -2,6 +2,8 @@
 
 set -e
 
+source /root/scripts/utils.sh
+
 [ "$DEBUG" == 'true' ] && set -x
 
 DAEMON=sshd
@@ -16,34 +18,53 @@ if [ ! "$(ls -A /etc/ssh)" ]; then
    cp -a /etc/ssh.cache/* /etc/ssh/
 fi
 # Customize sshd_config (set some keepalive. Should ensure 1h connexions)
-echo "TCPKeepAlive yes" >> /etc/ssh/sshd_config
-echo "ClientAliveInterval 20" >> /etc/ssh/sshd_config
-echo "ClientAliveCountMax 180" >> /etc/ssh/sshd_config
+# sed -i "s|#TCPKeepAlive yes|TCPKeepAlive yes\nClientAliveInterval 20\nClientAliveCountMax 180|g" /etc/ssh/sshd_config
+#sed -i "s|Subsystem\t	sftp\t	/usr/lib/openssh/sftp-server|Subsystem\t	sftp\t	/usr/lib/openssh/sftp-server -u 002|g" /etc/ssh/sshd_config
 
-# Generate Host keys, if required
-if ! ls /etc/ssh/ssh_host_* 1> /dev/null 2>&1; then
-    ssh-keygen -A
+
+# Load sshd config & SSH key from kubernetes secret if provided
+if [ "$SSHD_CONFIG_SECRET" ]; then
+  for f in sshd_config ssh_host_ed25519_key ssh_host_ed25519_key.pub; do
+    if [ -f "$SSHD_CONFIG_SECRET/$f" ]; then
+      echo cp $SSHD_CONFIG_SECRET/$f /etc/ssh/
+      cp $SSHD_CONFIG_SECRET/$f /etc/ssh/
+      chmod 644 /etc/ssh/$f
+    fi
+  done
+  chmod 600 /etc/ssh/*_key
+else
+  # Generate Host keys, if required
+  if ! ls /etc/ssh/ssh_host_* 1> /dev/null 2>&1; then
+      ssh-keygen -A
+  fi
 fi
 
 # set root's ssh key. Allows using a _FILE var (use secrets)
 mkdir -p /root/.ssh
 chmod 755 /root/.ssh
 touch /root/.ssh/authorized_keys
-if [ "$SSH_KEY_FILE" ] && [ -f $SSH_KEY_FILE ]; then
-    echo `cat $SSH_KEY_FILE` > /root/.ssh/authorized_keys
-fi
-if [ "$SSH_KEY" ]; then
-    echo "$SSH_KEY" > /root/.ssh/authorized_keys
+
+
+file_env 'SSH_ROOT_AUTHORIZED_KEYS'
+# if [ "$SSH_ROOT_AUTHORIZED_KEYS_FILE" ] && [ -f $SSH_ROOT_AUTHORIZED_KEYS_FILE ]; then
+#     echo `cat $SSH_ROOT_AUTHORIZED_KEYS_FILE` > /root/.ssh/authorized_keys
+# fi
+if [ "$SSH_ROOT_AUTHORIZED_KEYS" ]; then
+    echo "$SSH_ROOT_AUTHORIZED_KEYS" > /root/.ssh/authorized_keys
 fi
 chmod 600 /root/.ssh/authorized_keys
 
 #get a nice prompt with project name
-echo "export PS1='\[\e]0;\u@\h: \w\a\]\${debian_chroot:+(\$debian_chroot)}\u@${NAME}:\w\$'" >> /etc/profile
+echo "export PS1='\[\e]0;\u@\h: \w\a\]\${debian_chroot:+(\$debian_chroot)}\u@${NAME}:\w\$ '" >> /etc/profile
 sed -i "s|\\\h|${NAME}|g" /etc/skel/.bashrc
 
 
 # Set LDAP auth config (nslcd)
 cp /etc/nslcd.conf /etc/nslcd.conf.bak
+echo "" >> /etc/nslcd.conf
+echo "# configure logging" >> /etc/nslcd.conf
+echo "log /dev/stdout info" >> /etc/nslcd.conf
+
 sed -i "s|uri ldap://geoporegion.pigeosolutions.fr|uri $LDAP_URI|" /etc/nslcd.conf
 sed -i "s|dc=georchestra,dc=org|$LDAP_BASE|g" /etc/nslcd.conf
 if [ -n "$NSLCD_FILTER" ]; then

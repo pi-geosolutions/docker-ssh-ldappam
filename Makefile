@@ -1,23 +1,26 @@
 SHELL := /bin/bash
-TAG=1.2
+IMAGE=pigeosolutions/georchestra-ssh-ldappam
+REV=`git rev-parse --short HEAD`
+DATE=`date +%Y%m%d-%H%M`
 
 all: pull-deps docker-build-withgdal docker-push
 
 pull-deps:
-	docker pull debian:stretch
+	docker pull debian:buster
 
 docker-build-light:
-	docker build -t pigeosolutions/georchestra-ssh-ldappam:latest . ;\
-	docker tag  pigeosolutions/georchestra-ssh-ldappam:latest pigeosolutions/georchestra-ssh-ldappam:v${TAG}
+	docker build -t ${IMAGE}:latest . ;\
+	docker tag  ${IMAGE}:latest ${IMAGE}:${DATE}-${REV} ;\
+	echo tagged ${IMAGE}:${DATE}-${REV}
 
 docker-build-withgdal: docker-build-light
-	docker build -t pigeosolutions/georchestra-ssh-ldappam:latest-withGDAL -f Dockerfile-withGDAL . ;\
-	docker tag  pigeosolutions/georchestra-ssh-ldappam:latest-withGDAL pigeosolutions/georchestra-ssh-ldappam:v${TAG}-withGDAL
+	docker build -t ${IMAGE}:latest-withGDAL -f Dockerfile-withGDAL . ;\
+	docker tag  ${IMAGE}:latest-withGDAL ${IMAGE}:${DATE}-${REV}-withGDAL
 
 docker-push:
-	docker push pigeosolutions/georchestra-ssh-ldappam:latest ;\
-	docker push pigeosolutions/georchestra-ssh-ldappam:latest-withGDAL ;\
-	docker tag  pigeosolutions/georchestra-ssh-ldappam:latest pigeosolutions/georchestra-ssh-ldappam:v${TAG} ;\
-	docker tag  pigeosolutions/georchestra-ssh-ldappam:latest-withGDAL pigeosolutions/georchestra-ssh-ldappam:v${TAG}-withGDAL ;\
-	docker push pigeosolutions/georchestra-ssh-ldappam:v${TAG} ;\
-	docker push pigeosolutions/georchestra-ssh-ldappam:v${TAG}-withGDAL
+	docker push ${IMAGE}:latest ;\
+	docker push ${IMAGE}:latest-withGDAL ;\
+	docker tag  ${IMAGE}:latest ${IMAGE}:${DATE}-${REV} ;\
+	docker tag  ${IMAGE}:latest-withGDAL ${IMAGE}:${DATE}-${REV}-withGDAL ;\
+	docker push ${IMAGE}:${DATE}-${REV} ;\
+	docker push ${IMAGE}:${DATE}-${REV}-withGDAL
