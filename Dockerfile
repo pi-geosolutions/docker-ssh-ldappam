@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye-slim
 
 MAINTAINER Jean Pommier "jean.pommier@pi-geosolutions.fr"
 
