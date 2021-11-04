@@ -58,6 +58,10 @@ chmod 600 /root/.ssh/authorized_keys
 echo "export PS1='\[\e]0;\u@\h: \w\a\]\${debian_chroot:+(\$debian_chroot)}\u@${NAME}:\w\$ '" >> /etc/profile
 sed -i "s|\\\h|${NAME}|g" /etc/skel/.bashrc
 
+# Fix right on the crontab folder
+chown root:crontab /var/spool/cron/crontabs
+chmod 730 /var/spool/cron/crontabs
+chmod o+t /var/spool/cron/crontabs
 
 # Set LDAP auth config (nslcd)
 cp /etc/nslcd.conf /etc/nslcd.conf.bak
