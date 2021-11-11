@@ -24,7 +24,7 @@ fi
 
 # Load sshd config & SSH key from kubernetes secret if provided
 if [ "$SSHD_CONFIG_SECRET" ]; then
-  for f in sshd_config ssh_host_ed25519_key ssh_host_ed25519_key.pub; do
+  for f in sshd_config ssh_host_ed25519_key ssh_host_ed25519_key.pub ssh_host_rsa_key ssh_host_rsa_key.pub; do
     if [ -f "$SSHD_CONFIG_SECRET/$f" ]; then
       echo cp $SSHD_CONFIG_SECRET/$f /etc/ssh/
       cp $SSHD_CONFIG_SECRET/$f /etc/ssh/
