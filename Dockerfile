@@ -19,6 +19,7 @@ RUN apt-get update && \
                 dos2unix \
                 ldap-utils \
                 libnss-ldapd \
+                locales \
                 git \
                 nano \
                 openssh-server \
@@ -33,6 +34,12 @@ RUN apt-get update && \
                 wget \
                 zip \
       && apt-get clean
+
+# Configure locale: needed for proper display of psql results
+ENV LANG=en_US.UTF-8
+RUN sed -i -e "s/# $LANG.*/$LANG UTF-8/" /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=$LANG
 
 COPY root /
 
