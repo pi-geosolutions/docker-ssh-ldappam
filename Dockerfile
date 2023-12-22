@@ -19,6 +19,7 @@ RUN apt-get update && \
                 dos2unix \
                 ldap-utils \
                 libnss-ldapd \
+                libpam-ldapd \
                 locales \
                 git \
                 nano \
@@ -27,6 +28,7 @@ RUN apt-get update && \
                 p7zip-full \
                 rsync \
                 screen \
+                sudo \
                 supervisor \
                 tar \
                 unzip \

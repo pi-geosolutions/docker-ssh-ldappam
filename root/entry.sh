@@ -54,6 +54,12 @@ if [ "$SSH_ROOT_AUTHORIZED_KEYS" ]; then
 fi
 chmod 600 /root/.ssh/authorized_keys
 
+if [ -d $SUDOERS_CONFIG_FOLDER ]; then
+    echo Copying sudoers definition files from $SUDOERS_CONFIG_FOLDER
+    cp $SUDOERS_CONFIG_FOLDER/* /etc/sudoers.d/
+    chmod -R 0440 /etc/sudoers.d/
+fi
+
 #get a nice prompt with project name
 echo "export PS1='\[\e]0;\u@\h: \w\a\]\${debian_chroot:+(\$debian_chroot)}\u@${NAME}:\w\$ '" >> /etc/profile
 sed -i "s|\\\h|${NAME}|g" /etc/skel/.bashrc
@@ -89,9 +95,9 @@ fi
 # PAM files are directly copied at compile time (see Dockerfile)
 
 # Configure NSS
-sed -i -r 's/(^passwd:)(\s+)(.*)/\1\2compat ldap/' /etc/nsswitch.conf
-sed -i -r 's/(^group:)(\s+)(.*)/\1\2compat ldap/' /etc/nsswitch.conf
-sed -i -r 's/(^shadow:)(\s+)(.*)/\1\2compat ldap/' /etc/nsswitch.conf
+sed -i -r 's/(^passwd:)(\s+)(.*)/\1\2files ldap/' /etc/nsswitch.conf
+sed -i -r 's/(^group:)(\s+)(.*)/\1\2files ldap/' /etc/nsswitch.conf
+sed -i -r 's/(^shadow:)(\s+)(.*)/\1\2files ldap/' /etc/nsswitch.conf
 
 
 # Welcome banner
