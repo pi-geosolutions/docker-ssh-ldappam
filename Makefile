@@ -6,7 +6,7 @@ DATE=`date +%Y%m%d-%H%M`
 all: pull-deps docker-build-withgdal docker-push
 
 pull-deps:
-	docker pull debian:bullseye-slim
+	docker pull debian:bookworm-slim
 
 docker-build-light:
 	docker build -t ${IMAGE}:latest . ;\

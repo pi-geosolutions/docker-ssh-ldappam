@@ -54,7 +54,7 @@ if [ "$SSH_ROOT_AUTHORIZED_KEYS" ]; then
 fi
 chmod 600 /root/.ssh/authorized_keys
 
-if [ -d $SUDOERS_CONFIG_FOLDER ]; then
+if [ -n "$SUDOERS_CONFIG_FOLDER" ] && [ -d $SUDOERS_CONFIG_FOLDER ]; then
     echo Copying sudoers definition files from $SUDOERS_CONFIG_FOLDER
     cp $SUDOERS_CONFIG_FOLDER/* /etc/sudoers.d/
     chmod -R 0440 /etc/sudoers.d/

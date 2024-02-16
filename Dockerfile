@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 MAINTAINER Jean Pommier "jean.pommier@pi-geosolutions.fr"
 
@@ -6,7 +6,7 @@ MAINTAINER Jean Pommier "jean.pommier@pi-geosolutions.fr"
 # Uses supervisor in order to run side-by-side cron and sshd
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    NAME=geoporegion \
+    NAME=sshconsole \
     LDAP_BASE="dc=georchestra,dc=org" \
     LDAP_URI="ldap://ldap.georchestra"
 
