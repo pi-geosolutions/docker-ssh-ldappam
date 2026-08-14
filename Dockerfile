@@ -1,6 +1,6 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
-MAINTAINER Jean Pommier "jean.pommier@pi-geosolutions.fr"
+LABEL org.opencontainers.image.authors="jean.pommier@pi-geosolutions.fr"
 
 # Gives a SSH access with user authentification & session against LDAP directory
 # Uses supervisor in order to run side-by-side cron and sshd
@@ -27,7 +27,7 @@ RUN apt-get update && \
                 man-db \
                 p7zip-full \
                 rsync \
-                screen \
+                tmux \
                 sudo \
                 supervisor \
                 tar \
