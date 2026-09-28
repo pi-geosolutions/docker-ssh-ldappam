@@ -12,4 +12,5 @@ RUN apt-get update && \
               python3-gdal \
               python3-pip \
               python3-venv \
+              slite3 \
     && apt-get clean 
